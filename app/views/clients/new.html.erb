@@ -1,0 +1,11 @@
+<div class="col-6 gray-background top-padding-with-radius">
+  <h2>New Client</h2>
+
+  <%= simple_form_for @client, html: { class: 'form-horizontal' } do |f| %>
+    <%= f.input :first_name %>
+    <%= f.input :last_name %>
+    <%= f.input :email %>
+    <%= f.button :submit, class: 'btn btn-success' %>
+    <%= link_to 'Cancel', clients_path, class: 'btn btn-danger' %>
+  <% end %>
+</div>

@@ -1,0 +1,15 @@
+current directory: /Users/hoitomt/Code/wager_manager/vendor/bundle/gems/bindex-0.5.0/ext/bindex
+/Users/hoitomt/.rbenv/versions/2.5.0/bin/ruby -r ./siteconf20180209-24769-1r3a27q.rb extconf.rb
+creating Makefile
+
+current directory: /Users/hoitomt/Code/wager_manager/vendor/bundle/gems/bindex-0.5.0/ext/bindex
+make "DESTDIR=" clean
+
+current directory: /Users/hoitomt/Code/wager_manager/vendor/bundle/gems/bindex-0.5.0/ext/bindex
+make "DESTDIR="
+compiling cruby.c
+linking shared-object bindex/cruby.bundle
+
+current directory: /Users/hoitomt/Code/wager_manager/vendor/bundle/gems/bindex-0.5.0/ext/bindex
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 cruby.bundle ./.gem.20180209-24769-9kfkmz/bindex

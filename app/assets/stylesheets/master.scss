@@ -1,0 +1,19 @@
+@import "bootstrap";
+
+body {
+  padding-top: 5rem;
+}
+
+.gray-background {
+  background-color: whitesmoke
+}
+
+.top-padding-with-radius {
+  border-radius: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
