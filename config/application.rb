@@ -20,5 +20,9 @@ module WagerManager
       g.helper          false
       g.channel         assets: false
     end
+
+    config.SB_LOGIN_URL = 'https://www.sportsbook.ag/cca/customerauthn/pl/login'
+    config.SB_WAGERS_URL = "https://www.sportsbook.ag/sbk/sportsbook4/history.sbk"
+    config.DEFAULT_PER_PAGE = 20
   end
 end

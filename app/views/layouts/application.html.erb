@@ -23,6 +23,8 @@
               <li class="nav-item dropdown">
                 <%= link_to 'Clients', clients_path, class: "nav-link dropdown-toggle", id: "dropdown01", "data-toggle" => "dropdown", "aria-haspopup" => true, "aria-expanded" => false %>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
+                  <%= link_to 'All', clients_path, class: "dropdown-item" %>
+                  <hr>
                   <% current_user.clients.each do |client| %>
                     <%= link_to client.full_name, client_path(client), class: "dropdown-item" %>
                   <% end %>
@@ -32,7 +34,7 @@
               <%= link_to 'Clients', clients_path, class: 'nav-link' %>
             <% end %>
             <li class="nav-item">
-              <%= link_to 'Tickets', '#', class: 'nav-link' %>
+              <%= link_to 'Tickets', tickets_path, class: 'nav-link' %>
             </li>
           <% end %>
         </ul>

@@ -1,0 +1,163 @@
+<div id="accordion">
+  <%= tickets.each do |ticket| %>
+    <% heading_id = "heading_#{ticket.id}" %>
+    <% collapse_id = "collapse_#{ticket.id}" %>
+    <% bg_color = if ticket.won?
+        "bg-success"
+      elsif ticket.lost?
+        "bg-danger"
+      else
+        "bg-dark"
+      end
+    %>
+
+    <div class="card">
+      <div class="card-header <%= bg_color %> <%= !ticket.is_tagged? ? 'lighten_25' : '' %>" id="<%= heading_id %>">
+        <a class="accordian-link" href="" data-toggle="collapse" data-target="#<%= collapse_id %>" aria-expanded="false" aria-controls="<%= collapse_id %>">
+          <%= ticket.wager_type %> on <%= ticket.wager_date_display %> <%= ticket_financial_statement(ticket) %>
+        </a>
+        <div style="margin-top: 5px;">
+          <% ticket.ticket_line_items.each do |tle| %>
+            <p class="white small small-list"><%= tle.description %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="<%= collapse_id %>" class="collapse" aria-labelledby="<%= heading_id %>" data-parent="#accordion">
+        <div class="card-body">
+          <h4 class="pull-left">
+            <%= number_to_currency(ticket.amount_wagered) %>
+            <% if ticket.won?%>
+              <small>(paid <%= number_to_currency(ticket.amount_paid) %>)</small>
+            <% end %>
+          </h4>
+          <button class="pull-right btn btn-danger" ng-click="toggleShowEditPanel()">Edit</button>
+          <div class="clearfix"></div>
+          <p class="small">
+            <span >Tags: </span>
+            <span class="small" ng-repeat="ticketTag in ticket.ticket_tags">({{ticketTag.tag_name}} {{ticketTag.amount | currency}}) </span>
+          </p>
+          <div style="margin-bottom: 5px;" ng-show="showEditPanel">
+            <button ng-repeat="ticketTag in ticket.ticket_tags"
+                    class="btn btn-danger"
+                    ng-click="deleteTag(ticketTag, ticket)"
+                    style="margin: 0 5px 5px 0;">
+              {{ticketTag.tag_name}} {{ticketTag.amount | currency}}
+            </button>
+          </div>
+          <div>
+            <span ng-repeat="tag in tags" style="margin-right: 5px;">
+              <button class="btn btn-primary"
+                      ng-click="selectTag(ticket, tag)"
+                      ng-class="isSelectedTag(ticket, tag) ? 'btn-danger' : '' ">
+                {{tag.name}}
+              </button>
+            </span>
+          </div>
+          <div id="collapse-tag-amount-{{ticket.id}}" class="tag-amount-panel" ng-show="isSelectedTicket(ticket)">
+            <button class="btn btn-success" ng-click="createTicketTag(ticket, 5.0)">$5</button>
+            <button class="btn btn-success" ng-click="createTicketTag(ticket, 10.0)">$10</button>
+            <button class="btn btn-success" ng-click="createTicketTag(ticket, 15.0)">$15</button>
+            <button class="btn btn-success" ng-click="createTicketTag(ticket, 20.0)">$20</button>
+            <button class="btn btn-success" ng-click="selectCustomTagAmount(ticket, 0)">Custom</button>
+          </div>
+          <div ng-show="customAmountSelected(ticket)" class="custom-tag-amount-container">
+            <form role="form" class="form-inline">
+              <input class="form-control" id="tag-amount" type="text" pattern="\d*">
+              <button class="btn btn-success" ng-click="submitCustomTag(ticket, $event)">Submit</button>
+            </form>
+          </div>
+          <table class="table-condensed" ng-repeat="ticketLineItem in ticket.ticket_line_items">
+            <tr>
+              <th colspan="2">{{ticketLineItem.line_item_date | date:'M/d/yy'}}: {{ticketLineItem.description}}</th>
+            </tr>
+            <tr ng-show="isHeadToHead(ticketLineItem)">
+              <td>{{ticketLineItem.away_team}}<br />{{ticketLineItem.home_team}}</td>
+              <td>{{ticketLineItem.away_score}}<br />{{ticketLineItem.home_score}}</td>
+            </tr>
+          </table>
+          <p class="small text-right" style="margin: 10px 0 0 0;">
+            <em><%= ticket.sb_bet_id %></em>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+<div class="panel-group" id="accordion">
+  <div ng-repeat="ticket in tickets">
+    <div class="panel panel-default {{ticketResultClass(ticket)}}" >
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ticket.id}}" href="">
+            {{ticket.wager_type}} on {{ticket.wager_date | date:'MMM dd, yyyy'}} {{tagStatus(ticket)}}
+          </a>
+        </h4>
+        <div style="margin-top: 5px;">
+          <p ng-repeat="ticketLineItem in ticket.ticket_line_items" style="margin: 0px; line-height: 1;">
+            <small>{{ticketLineItem.description}}</small>
+          </p>
+        </div>
+      </div>
+      <div id="collapse{{ticket.id}}" class="panel-collapse collapse">
+        <div class="panel-body">
+          <h4 class="pull-left">
+            {{ticket.amount_wagered | currency}}
+            <small ng-show="ticketIsSuccess(ticket)">(paid {{ticket.amount_paid | currency}})</small>
+          </h4>
+          <button class="pull-right btn btn-danger" ng-click="toggleShowEditPanel()">Edit</button>
+          <div class="clearfix"></div>
+          <p class="small">
+            <span >Tags: </span>
+            <span class="small" ng-repeat="ticketTag in ticket.ticket_tags">({{ticketTag.tag_name}} {{ticketTag.amount | currency}}) </span>
+          </p>
+          <div style="margin-bottom: 5px;" ng-show="showEditPanel">
+            <button ng-repeat="ticketTag in ticket.ticket_tags"
+                    class="btn btn-danger"
+                    ng-click="deleteTag(ticketTag, ticket)"
+                    style="margin: 0 5px 5px 0;">
+              {{ticketTag.tag_name}} {{ticketTag.amount | currency}}
+            </button>
+          </div>
+          <div>
+            <span ng-repeat="tag in tags" style="margin-right: 5px;">
+              <button class="btn btn-primary"
+                      ng-click="selectTag(ticket, tag)"
+                      ng-class="isSelectedTag(ticket, tag) ? 'btn-danger' : '' ">
+                {{tag.name}}
+              </button>
+            </span>
+          </div>
+          <div id="collapse-tag-amount-{{ticket.id}}" class="tag-amount-panel" ng-show="isSelectedTicket(ticket)">
+            <button class="btn btn-success" ng-click="createTicketTag(ticket, 5.0)">$5</button>
+            <button class="btn btn-success" ng-click="createTicketTag(ticket, 10.0)">$10</button>
+            <button class="btn btn-success" ng-click="createTicketTag(ticket, 15.0)">$15</button>
+            <button class="btn btn-success" ng-click="createTicketTag(ticket, 20.0)">$20</button>
+            <button class="btn btn-success" ng-click="selectCustomTagAmount(ticket, 0)">Custom</button>
+          </div>
+          <div ng-show="customAmountSelected(ticket)" class="custom-tag-amount-container">
+            <form role="form" class="form-inline">
+              <input class="form-control" id="tag-amount" type="text" pattern="\d*">
+              <button class="btn btn-success" ng-click="submitCustomTag(ticket, $event)">Submit</button>
+            </form>
+          </div>
+          <table class="table-condensed" ng-repeat="ticketLineItem in ticket.ticket_line_items">
+            <tr>
+              <th colspan="2">{{ticketLineItem.line_item_date | date:'M/d/yy'}}: {{ticketLineItem.description}}</th>
+            </tr>
+            <tr ng-show="isHeadToHead(ticketLineItem)">
+              <td>{{ticketLineItem.away_team}}<br />{{ticketLineItem.home_team}}</td>
+              <td>{{ticketLineItem.away_score}}<br />{{ticketLineItem.home_score}}</td>
+            </tr>
+          </table>
+          <p class="small text-right" style="margin: 10px 0 0 0;">
+            <em>{{ticket.sb_bet_id}}</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

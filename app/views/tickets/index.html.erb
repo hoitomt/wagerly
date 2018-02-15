@@ -1,0 +1,7 @@
+<% if @client %>
+  <h1>Tickets for <%= @client.full_name %></h1>
+<% else %>
+  <h1>All Tickets</h1>
+<% end %>
+
+<%= render partial: 'accordian_list', locals: {tickets: @tickets} %>
