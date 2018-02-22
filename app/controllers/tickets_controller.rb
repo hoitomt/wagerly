@@ -7,6 +7,7 @@ class TicketsController < ApplicationController
     end
 
     @tickets = scope
+    @clients = current_user.clients
   end
 end
 

@@ -5,6 +5,12 @@ class ClientsController < ApplicationController
 
   def show
     @client = Client.find(params[:id])
+
+    limit = params[:limit] || 20
+    scope = Ticket.includes(:ticket_line_items).limit(limit).order('wager_date DESC')
+    scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", @client.id)
+
+    @tickets = scope
   end
 
   def new

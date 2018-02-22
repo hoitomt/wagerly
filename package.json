@@ -2,7 +2,13 @@
   "name": "wager_manager",
   "private": true,
   "dependencies": {
-    "@rails/webpacker": "^3.2.1"
+    "@rails/webpacker": "^3.2.1",
+    "axios": "^0.18.0",
+    "moment": "^2.20.1",
+    "stimulus": "^1.0.1",
+    "vue": "^2.5.13",
+    "vue-loader": "^14.1.1",
+    "vue-template-compiler": "^2.5.13"
   },
   "devDependencies": {
     "webpack-dev-server": "^2.11.1"

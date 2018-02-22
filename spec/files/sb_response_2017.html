@@ -1,0 +1,1444 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+#my-bets-carousel .carousel-indicators { visibility:hidden; }
+@media (min-width: 768px) and (max-width: 1200px) {
+#my-bets-carousel .carousel-control .glyphicon-chevron-left, #my-bets-carousel .carousel-control .glyphicon-chevron-right, #my-bets-carousel .carousel-control .icon-next, #my-bets-carousel .carousel-control .icon-prev { font-size: 20px; top: 60%; }
+}
+@media (min-width: 1200px) {
+#my-bets-carousel .carousel-control { visibility: hidden; }
+#my-bets-carousel:hover .carousel-control { visibility: visible; }
+}
+@media (max-width: 767px) {
+#my-bets-carousel .carousel-control .glyphicon-chevron-left, #my-bets-carousel .carousel-control .glyphicon-chevron-right, #my-bets-carousel .carousel-control .icon-next, #my-bets-carousel .carousel-control .icon-prev { top: 35%; }
+}
+</style>
+<div id="my-bets-carousel" class="carousel slide" data-ride="carousel" style="margin-top:-15px">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#my-bets-carousel" data-slide-to="0" class="active"></li>
+    <li data-target="#my-bets-carousel" data-slide-to="1"></li>
+    <li data-target="#my-bets-carousel" data-slide-to="2"></li>
+    <li data-target="#my-bets-carousel" data-slide-to="3"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <!--<div class="item active">
+
+    <a href="/casino/play/american-blackjack-low" class="no-ajaxy" target="_self"><img src="/static/SBK/www.sportsbook.ag/SB_Footer_Blackjack.jpg" alt="BlackJack" class="img-responsive"></a>
+
+    </div>-->
+    <div class="item active"><a href="/info/cashout" class="no-ajaxy" target="_self"><img src="/static/SBK/www.sportsbook.ag/HP-Cashout-MyBets.jpg" alt="MrVegas" class="img-responsive"></a></div>
+    <div class="item"><a href="/casino/play/mr-vegas" class="no-ajaxy" target="_self"><img src="/static/SBK/www.sportsbook.ag/SB_Footer_MrVegas.jpg" alt="MrVegas" class="img-responsive"></a></div>
+    <div class="item"><a href="/casino/play/three-card-poker" class="no-ajaxy" target="_self"><img src="/static/SBK/www.sportsbook.ag/SB_Footer_ThreeCardPoker.jpg" alt="ThreeCardPoker" class="img-responsive"></a></div>
+    <div class="item"><a href="/casino/play/craps" class="no-ajaxy" target="_self"><img src="/static/SBK/www.sportsbook.ag/SB_Footer_Craps.jpg" alt="Craps" class="img-responsive"></a></div>
+  </div>
+  <!-- Controls -->
+  <a class="left carousel-control no-ajaxy" href="#my-bets-carousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control no-ajaxy" href="#my-bets-carousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<br>
+
+
+<form id="betHistorySearchForm" class="betHistorySearchForm" action="./history.sbk" method="post" role="form">
+  <input type="hidden" id="page" value="0"/>
+  <input type="hidden" id="casinoId" value="7000"/>
+  <div class="row">
+    <div class="form-group col-xs-9 col-md-6">
+      <label for="selBetState" class="control-label">Search for</label>
+      <select name="betState" id="selBetState" class="form-control" onchange="checkPending();">
+        <option value="0" selected>Pending and Processed</option>
+        <option value="1" >Pending</option>
+        <option value="2" >Processed</option>
+        <option value="4" >Unaccepted Live Betting</option>
+      </select>
+    </div>
+
+    <div class="form-group col-xs-9 col-md-6">
+      <div class="radio">
+          <label>
+            <input class="inputRadioButton"  type="radio" name="searchByDateType"  value="1"  checked />
+            By Bet Date
+          </label>
+      </div>
+      <div class="radio">
+          <label>
+            <input class="inputRadioButton"  type="radio" name="searchByDateType"  value="2"  />
+            By Event Date
+          </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="priorDaysId" class="control-label">Date Range</label>
+    <select name="dateRangeMode" id="priorDaysId" onchange="checkCustomize();" class="form-control">
+
+        <option value="THIS_MONTH"  >This month</option>
+
+        <option value="LAST_DAY"  >Last day</option>
+
+        <option value="LAST_3_DAYS"  >Last 3 days</option>
+
+        <option value="LAST_WEEK"  >Last week</option>
+
+        <option value="LAST_31_DAYS"  >Last 31 days</option>
+
+        <option value="PREVIOUS_MONTH"  >August 2017</option>
+
+        <option value="PREVIOUS_MONTH_2"  >July 2017</option>
+
+        <option value="PREVIOUS_MONTH_3"  >June 2017</option>
+
+        <option value="PREVIOUS_MONTH_4"  >May 2017</option>
+
+        <option value="PREVIOUS_MONTH_5"  >April 2017</option>
+
+        <option value="PREVIOUS_MONTH_6"  >March 2017</option>
+
+        <option value="CUSTOM" selected >Custom</option>
+
+    </select>
+  </div>
+
+  <div id="custFilter" class="row">
+    <div class="form-group col-xs-6 col-md-4">
+      <label for="customDaysId" class="control-label">Display (days)</label>
+      <select name="customDateRangeDays" id="customDaysId" class="form-control">
+
+          <option value="7" >7</option>
+
+          <option value="1" >1</option>
+
+          <option value="3" >3</option>
+
+          <option value="10" >10</option>
+
+          <option value="20" >20</option>
+
+          <option value="30" selected>30</option>
+
+      </select>
+    </div>
+
+    <div class="form-group col-xs-6 col-md-4">
+      <div class="radio">
+          <label>
+            <input class="inputRadioButton"  type="radio" name="customDateRangeDirection"  value="1"  checked />
+            Starting
+          </label>
+      </div>
+      <div class="radio">
+          <label>
+            <input class="inputRadioButton"  type="radio" name="customDateRangeDirection"  value="2"  />
+            Ending
+          </label>
+      </div>
+    </div>
+
+    <div class="form-group col-xs-6 col-md-4">
+      <div id="dp" class="input-append date" data-date="01/01/2017" data-date-format="mm/dd/yyyy" >
+          <input id="dpValue" class="span2" size="16" name="customDateRangeDate" type="text" value="01/01/2017" readonly />
+          <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <input id="betHistorySearchButton" type="submit" value="Search / Refresh" name="betHistorySearchButton" class="btn btn-default searchBetHistory"/>
+  </div>
+
+</form>
+
+
+<div id="searchResult">
+    <div class="panel panel-primary processedWon" id="513105807" class="tkt-bet" data-ate="bet_">
+      <div class="panel-heading">
+        <span class="tkt-betHeader">
+          <span class="betIdCounter">1.</span>
+          <span class="betId"> Bet#: 513105807</span>
+        </span>
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+            <span id="betDate" class="pull-right">
+              <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+              01/28/17 17:12 EST
+            </span>
+          </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">5.00</span>
+                      to win $ <span id="betWinAmt">4.55</span>
+                      (paid $ <span id="betPaidAmt">9.55</span>)
+            </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+          <div id="betSel_1" class="row">
+            <div class="col-xs-12">
+              <span class="tkt-selheader">
+                <span id="team1">Kansas</span>
+                <span id="fnScore1"> 79</span> vs
+                <span id="team2">Kentucky</span>
+                <span id="fnScore2"> 73</span>
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/28/17 18:20 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+                  Kansas
+
+
+                  +7 (-110)
+              </span>
+            </div>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedLost" id="512307922" class="tkt-bet" data-ate="bet_1">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">2.</span>
+          <span class="betId"> Bet#: 512307922</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/16/17 12:32 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">10.00</span>
+                      to win $ <span id="betWinAmt">9.09</span>
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Lost</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Pittsburgh Steelers</span><span id="fnScore1"> 17</span> vs <span id="team2">New England Patriots</span><span id="fnScore2"> 36</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/22/17 18:40 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+                  Pittsburgh Steelers
+
+
+
+                +6 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="512306278" class="tkt-bet" data-ate="bet_2">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">3.</span>
+          <span class="betId"> Bet#: 512306278</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/16/17 12:08 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">10.00</span>
+                      to win $ <span id="betWinAmt">9.09</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">19.09</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Green Bay Packers</span><span id="fnScore1"> 21</span> vs <span id="team2">Atlanta Falcons</span><span id="fnScore2"> 44</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/22/17 15:05 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+
+
+                Over 60 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedLost" id="512306266" class="tkt-bet" data-ate="bet_3">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">4.</span>
+          <span class="betId"> Bet#: 512306266</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/16/17 12:08 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">20.00</span>
+                      to win $ <span id="betWinAmt">17.39</span>
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Lost</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Green Bay Packers</span><span id="fnScore1"> 21</span> vs <span id="team2">Atlanta Falcons</span><span id="fnScore2"> 44</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/22/17 15:05 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+                  Green Bay Packers
+
+
+
+                +4 (-115)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="512192567" class="tkt-bet" data-ate="bet_4">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">5.</span>
+          <span class="betId"> Bet#: 512192567</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/15/17 13:24 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">5.00</span>
+                      to win $ <span id="betWinAmt">4.55</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">9.55</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Pittsburgh Steelers</span><span id="fnScore1"> 18</span> vs <span id="team2">Kansas City Chiefs</span><span id="fnScore2"> 16</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/15/17 20:20 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+
+
+                Under 44 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedLost" id="512111244" class="tkt-bet" data-ate="bet_5">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">6.</span>
+          <span class="betId"> Bet#: 512111244</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/14/17 18:49 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">2.00</span>
+                      to win $ <span id="betWinAmt">18.00</span>
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Lost</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Houston Texans</span><span id="fnScore1"> 16</span> vs <span id="team2">New England Patriots</span><span id="fnScore2"> 34</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/14/17 20:15 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+                  Houston Texans
+
+
+
+                +900
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="511956347" class="tkt-bet" data-ate="bet_6">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">7.</span>
+          <span class="betId"> Bet#: 511956347</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/13/17 14:23 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">10.00</span>
+                      to win $ <span id="betWinAmt">9.09</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">19.09</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Pittsburgh Steelers</span><span id="fnScore1"> 18</span> vs <span id="team2">Kansas City Chiefs</span><span id="fnScore2"> 16</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/15/17 20:20 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+                  Pittsburgh Steelers
+
+
+
+                +1 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedLost" id="511783917" class="tkt-bet" data-ate="bet_7">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">8.</span>
+          <span class="betId"> Bet#: 511783917</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Future Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/10/17 00:57 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">10.00</span>
+                      to win $ <span id="betWinAmt">75.00</span>
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Lost</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+              <div>
+
+
+                <span id="edDesc">2017 Super Bowl LI - Odds to Win - Houston Texas</span>
+
+              </div>
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+                  <span id="team1">Packers</span><span class="futureWinLose" id="fnScore1">  Lose</span>
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                02/05/17 18:30 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+
+
+                15/2
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="511783916" class="tkt-bet" data-ate="bet_8">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">9.</span>
+          <span class="betId"> Bet#: 511783916</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/10/17 00:57 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">20.00</span>
+                      to win $ <span id="betWinAmt">18.18</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">38.18</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Green Bay Packers</span><span id="fnScore1"> 34</span> vs <span id="team2">Dallas Cowboys</span><span id="fnScore2"> 31</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/15/17 16:40 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+                  Green Bay Packers
+
+
+
+                +4 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="511783915" class="tkt-bet" data-ate="bet_9">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">10.</span>
+          <span class="betId"> Bet#: 511783915</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/10/17 00:57 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">20.00</span>
+                      to win $ <span id="betWinAmt">18.18</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">38.18</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Seattle Seahawks</span><span id="fnScore1"> 20</span> vs <span id="team2">Atlanta Falcons</span><span id="fnScore2"> 36</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/14/17 16:35 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+
+                  Atlanta Falcons
+
+
+                -4.5 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="511781869" class="tkt-bet" data-ate="bet_10">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">11.</span>
+          <span class="betId"> Bet#: 511781869</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/09/17 23:55 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">3.00</span>
+                      to win $ <span id="betWinAmt">7.20</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">10.20</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+              <div>
+
+
+                <span id="edDesc">Clemson vs Alabama - Live Betting Game Line</span>
+
+              </div>
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Clemson</span><span id="fnScore1"> 35</span> vs <span id="team2">Alabama</span><span id="fnScore2"> 31</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/09/17 20:15 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+                  Clemson
+
+
+
+                +240
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="511781462" class="tkt-bet" data-ate="bet_11">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">12.</span>
+          <span class="betId"> Bet#: 511781462</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/09/17 23:41 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">5.00</span>
+                      to win $ <span id="betWinAmt">3.85</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">8.85</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+              <div>
+
+
+                <span id="edDesc">Clemson vs Alabama - Live Betting Game Line</span>
+
+              </div>
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Clemson</span><span id="fnScore1"> 35</span> vs <span id="team2">Alabama</span><span id="fnScore2"> 31</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/09/17 20:15 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+                  Clemson
+
+
+
+                +3.5 (-130)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="511606345" class="tkt-bet" data-ate="bet_12">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">13.</span>
+          <span class="betId"> Bet#: 511606345</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Straight Wager</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/08/17 10:55 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">5.00</span>
+                      to win $ <span id="betWinAmt">4.55</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">9.55</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">New York Giants</span><span id="fnScore1"> 13</span> vs <span id="team2">Green Bay Packers</span><span id="fnScore2"> 38</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/08/17 16:40 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+
+                  Green Bay Packers
+
+
+                -5 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="511416491" class="tkt-bet" data-ate="bet_13">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">14.</span>
+          <span class="betId"> Bet#: 511416491</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">Parlay (2 Teams)</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/06/17 18:42 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">5.00</span>
+                      to win $ <span id="betWinAmt">7.35</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">12.35</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+                  <span id="team1">Detroit Lions</span><span id="fnScore1"> 6</span> vs <span id="team2">Seattle Seahawks</span><span id="fnScore2"> 26</span>
+                </span>
+                <span id="eventTime" class="pull-right">
+                  01/07/17 20:15 EST
+                </span>
+              </div>
+              <div class="col-xs-12">
+                <span id="market">
+
+
+                  Seattle Seahawks
+
+
+                -6.5 (-170)
+
+                </span>
+                <span class="pull-right">Bought <span id="buyPoints">1.5</span> point(s)</span>
+
+              </div>
+            </div>
+            <div id="betSel_2" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Oakland Raiders</span><span id="fnScore1"> 14</span> vs <span id="team2">Houston Texans</span><span id="fnScore2"> 27</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/07/17 16:35 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+
+                  Houston Texans
+
+
+                -2.5 (-180)
+
+              </span>
+
+
+                <span class="pull-right">Bought <span id="buyPoints">1.5</span> point(s)</span>
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary processedWon" id="511155340" class="tkt-bet" data-ate="bet_14">
+
+      <div class="panel-heading">
+          <span class="tkt-betHeader">
+          <span class="betIdCounter">15.</span>
+          <span class="betId"> Bet#: 511155340</span>
+
+        </span>
+
+
+      </div>
+      <div class="tkt-details">
+          <div class="clearfix tkt-bettype">
+            <span id="betDesc">6 Point Teaser (2 Teams)</span>
+          <span id="betDate" class="pull-right">
+            <!-- Hack: betDate is in EDT but timezone says PDT.
+              Have to build a new date object with correct timezone. -->
+
+
+
+            01/02/17 10:55 EST
+          </span>
+        </div>
+          <div class="clearfix">
+            <span>Bet $ <span id="betAmt">10.00</span>
+                      to win $ <span id="betWinAmt">9.09</span>
+
+
+
+                            (paid $ <span id="betPaidAmt">19.09</span>)
+
+
+          </span>
+            <span class="pull-right"><b>Result: <span id="betResult">Wager Won</span></b></span>
+          </div>
+
+
+
+            <div id="betSel_1" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">USC</span><span id="fnScore1"> 52</span> vs <span id="team2">Penn State</span><span id="fnScore2"> 49</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/02/17 17:10 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+
+                  Penn State
+
+
+                +13.5 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+
+            <div id="betSel_2" class="row">
+
+
+
+
+              <div class="col-xs-12">
+                <span class="tkt-selheader">
+
+
+
+
+
+
+
+                        <span id="team1">Western Michigan</span><span id="fnScore1"> 16</span> vs <span id="team2">Wisconsin</span><span id="fnScore2"> 24</span>
+
+
+
+
+              </span>
+              <span id="eventTime" class="pull-right">
+                01/02/17 13:00 EST
+              </span>
+            </div>
+            <div class="col-xs-12">
+              <span id="market">
+
+
+                  Wisconsin
+
+
+                -1.5 (-110)
+
+              </span>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+
+</div>
+
+<div id="betHistoryFooter" class="clearfix">
+
+  <a id="toTopPage" class ="toTopPage" href="#">Back to Top</a>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    $('#dp').datepicker({
+      autoclose: true
+    });
+    checkCustomize();
+  });
+
+  ga('send', 'pageview', 'bethistory');
+</script>
+
+
+
+
+
+
+
+

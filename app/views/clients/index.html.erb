@@ -19,7 +19,7 @@
       <td><%= client.email %></td>
       <td></td>
       <td></td>
-      <td><%= link_to 'Tickets', tickets_path(client_id: client), class: 'btn btn-primary' %></td>
+      <td><%= link_to 'Summary', client_path(client), class: 'btn btn-primary' %></td>
       <td><%= link_to 'Delete', client_path(client), method: :delete, class: 'btn btn-danger' %></td>
     </tr>
   <% end %>

@@ -20,14 +20,17 @@ module SB
           :wager_type => sb_wager_type(panel),
           :amount_wagered => sb_amount_wagered(panel),
           :amount_to_win => sb_amount_to_win(panel),
-          :outcome => sb_outcome(panel)
+          :outcome => sb_outcome(panel),
+          :amount_paid => sb_amount_paid(panel),
         )
         add_or_update_ticket(ticket, panel)
       end
 
       def add_or_update_ticket(ticket, panel)
         if existing_ticket = Ticket.where(sb_bet_id: ticket.sb_bet_id).first
-          existing_ticket.update_attributes(outcome: ticket.outcome, amount_to_win: ticket.amount_to_win)
+          existing_ticket.update_attributes(outcome: ticket.outcome,
+                                            amount_to_win: ticket.amount_to_win,
+                                            amount_paid: ticket.amount_paid)
           update_line_items(panel, existing_ticket)
           existing_ticket
         else
@@ -62,6 +65,10 @@ module SB
 
       def sb_outcome(panel)
         panel.xpath("div[contains(@class,'tkt-details')]//span[contains(@id, 'betResult')]").text
+      end
+
+      def sb_amount_paid(panel)
+        panel.xpath("div[contains(@class,'tkt-details')]//span[contains(@id, 'betPaidAmt')]").text
       end
 
       # Rather than update line items, just delete and recreate
