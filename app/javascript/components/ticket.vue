@@ -1,8 +1,8 @@
 <template>
   <div class="card">
-    <div :class="'card-header ' + resultClass(ticket)" :id="'heading-' + ticket.id">
+    <div :class="'card-header ' + resultClass(ticket) + ' ' + taggedStatusClass()" :id="'heading-' + ticket.id">
       <a class="accordian-link" :href="'#collapse-' + ticket.id" data-toggle="collapse" :data-target="'#collapse-' + ticket.id" aria-expanded="false" :aria-controls="'collapse_' + ticket.id">
-        {{ description(ticket) }}
+        {{ description(ticket) }}<span v-if="untaggedAmount != 0"> - ({{untaggedAmount | currency}})</span>
       </a>
       <div style="margin-top: 5px;">
         <p class="white small small-list" v-for="ticketLineItem in ticket.ticket_line_items">
@@ -50,12 +50,17 @@
           <button class="btn btn-success" v-on:click="createTicketTag(ticket, 20.0)">$20</button>
           <button class="btn btn-success" v-on:click="enterCustomTagAmount(ticket, 0)">Custom</button>
         </div>
-        <div v-if="showCustomTagAmount" class="custom-tag-amount-container" style="margin-top: 5px;">
-          <form role="form" class="form-inline">
-            <input class="form-control" id="tag-amount" type="text" pattern="\d*">
-            <button class="btn btn-success" ng-click="submitCustomTag(ticket, $event)" style="margin-left: 5px;">Submit</button>
-          </form>
-        </div>
+        <transition v-on:after-enter="focusInput">
+          <div v-if="showCustomTagAmount" class="custom-tag-amount-container" style="margin-top: 5px;">
+            <form role="form" class="form-inline" v-on:submit="submitCustomTag">
+              <input type="text" v-model="formCustomTagAmount" ref="customTagAmountInput" class="form-control" id="tag-amount"pattern="\d*">
+              <button class="btn btn-success" style="margin-left: 5px;">Submit</button>
+            </form>
+          </div>
+        </transition>
+        <p class="small float-right" style="margin: 10px 0 0 0;">
+          <em>{{ticket.sb_bet_id}}</em>
+        </p>
       </div>
     </div>
   </div>
@@ -68,24 +73,28 @@
     props: ['initTicket', 'initClients'],
     data: function () {
       return {
-        showEditTagsPanel: false,
-        showTagAmount: false,
-        showCustomTagAmount: false,
+        formCustomTagAmount: null,
         selectedClient: {},
+        showEditTagsPanel: false,
+        showCustomTagAmount: false,
+        showTagAmount: false,
         ticket: {}
       }
     },
     computed: {
       clients: function() {
         return this.initClients
+      },
+      untaggedAmount: function() {
+        return (this.ticket.amount_wagered - this.amountTagged())
       }
     },
     created: function() {
       this.ticket = this.initTicket
     },
     methods: {
-      amountTagged: function(ticket) {
-        return ticket_tags.reduce(function(sum, ticketTag) {
+      amountTagged: function() {
+        return this.ticket.ticket_tags.reduce(function(sum, ticketTag) {
           return sum + ticketTag.amount
         }, 0)
       },
@@ -118,12 +127,22 @@
       },
       enterCustomTagAmount: function(ticket) {
         this.showCustomTagAmount = !this.showCustomTagAmount
+        // this.$nextTick(function() {
+        //   if(this.showCustomTagAmount) {
+        //     card.querySelectorAll("#tag-amount")[0].focus()
+        //   }
+        // })
       },
       financialStatement: function(ticket) {
         if(!this.isTagged(ticket)) {
           return this.untaggedAmount(ticket)
         }
         return 0;
+      },
+      focusInput: function() {
+        // This function is required
+        // We have to wait until the DOM is updated before trying to select the input
+        this.$refs.customTagAmountInput.focus()
       },
       isSelectedClient: function(ticket, client) {
         var clientMatch = ticket.ticket_tags.findIndex(function(ticketTag){
@@ -141,6 +160,9 @@
       lost: function(ticket) {
         return /lost/i.test(ticket.outcome)
       },
+      overtagged: function(){
+        return this.untaggedAmount < 0
+      },
       resultClass: function(ticket) {
         if( this.won(ticket) )
           return 'bg-success'
@@ -149,13 +171,48 @@
         else
           return 'bg-dark'
       },
-      tagWithClient: function(ticket, client) {
-        this.showTagAmount = !this.showTagAmount
-        this.selectedClient = client
-        console.log(this.selectedClient)
+      submitCustomTag: function(event) {
+        console.log(this.selectedClient.full_name)
+        console.log(this.formCustomTagAmount)
+        console.log(this.ticket.id)
+        event.preventDefault();
+
+        HTTP.post(`ticket_tags`, {
+          ticket_id: this.ticket.id,
+          amount: this.formCustomTagAmount,
+          client_id: this.selectedClient.id
+        })
+        .then(response => {
+          this.ticket = response.data
+          this.showTagAmount = false
+          this.showCustomTagAmount = false
+        })
+        .catch(e => {
+          console.log(e)
+        })
       },
-      untaggedAmount: function(ticket) {
-        return (ticket.amount_wagered - this.amountTagged(ticket))
+      taggedStatusClass: function() {
+        if(this.overtagged()) {
+          // Overtagged
+          return "gray-background"
+        } else if (this.undertagged()) {
+          // Undertagged
+          return "lighten_50"
+        }
+      },
+      tagWithClient: function(ticket, client) {
+        this.showCustomTagAmount = false
+        if(this.selectedClient.id === client.id) {
+          // Re-clicking the selected client, therefore unselect it
+          this.selectedClient = {}
+          this.showTagAmount = false
+        } else {
+          this.showTagAmount = true
+          this.selectedClient = client
+        }
+      },
+      undertagged: function() {
+        return this.untaggedAmount > 0
       },
       won: function(ticket) {
         return /won/i.test(ticket.outcome)

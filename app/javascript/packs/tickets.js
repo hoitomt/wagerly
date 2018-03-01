@@ -17,9 +17,11 @@ Vue.filter('formatDate', function(value) {
 })
 
 Vue.filter('currency', function(value) {
-  if (value) {
+  try {
     var decimalValue = parseFloat(Math.round(value * 100) / 100).toFixed(2)
     return "$" + decimalValue
+  } catch(error) {
+    return "Unparseable"
   }
 })
 
