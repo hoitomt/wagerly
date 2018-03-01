@@ -1,6 +1,6 @@
 class AddExistingTables < ActiveRecord::Migration[5.1]
   def up
-    create_table "tickets"
+    create_table "tickets" do |t|
       t.string   "sb_bet_id"
       t.datetime "wager_date"
       t.string   "wager_type",     limit: 50
