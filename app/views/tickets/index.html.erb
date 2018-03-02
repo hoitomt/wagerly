@@ -1,4 +1,4 @@
-<% if @client %>
+<% if @client.present? %>
   <h1>Tickets for <%= @client.full_name %></h1>
 <% else %>
   <h1>All Tickets</h1>
