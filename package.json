@@ -1,5 +1,5 @@
 {
-  "name": "wager_manager",
+  "name": "wagerly",
   "private": true,
   "dependencies": {
     "@rails/webpacker": "^3.2.1",

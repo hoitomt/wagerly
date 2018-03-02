@@ -1,3 +1,3 @@
-# Wager Manager
+# Wagerly
 
 Manage your wagers
