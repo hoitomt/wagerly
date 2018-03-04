@@ -83,13 +83,16 @@
     },
     computed: {
       clients: function() {
+        console.log("clients")
         return this.initClients
       },
       untaggedAmount: function() {
+        console.log("untaggedAmount")
         return (this.ticket.amount_wagered - this.amountTagged())
       }
     },
     created: function() {
+      console.log(this.initTicket)
       this.ticket = this.initTicket
     },
     methods: {

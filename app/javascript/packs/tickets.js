@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import TicketsApp from '../tickets_app.vue'
+import Tickets from '../tickets.vue'
 import moment from 'moment'
 
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('ticket-container')
   const app = new Vue({
     el,
-    render: h => h(TicketsApp)
+    render: h => h(Tickets)
   })
 })
 

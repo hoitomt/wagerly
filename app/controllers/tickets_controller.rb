@@ -7,7 +7,12 @@ class TicketsController < ApplicationController
     end
 
     @tickets = scope
-    @clients = current_user.clients
+  end
+
+  def show
+    # This is a hack to get the vuejs template to work
+    @tickets = Ticket.where(sb_bet_id: params[:id])
+    @ticket = @tickets.first
   end
 end
 
