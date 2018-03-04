@@ -53,7 +53,7 @@
         <transition v-on:after-enter="focusInput">
           <div v-if="showCustomTagAmount" class="custom-tag-amount-container" style="margin-top: 5px;">
             <form role="form" class="form-inline" v-on:submit="submitCustomTag">
-              <input type="text" v-model="formCustomTagAmount" ref="customTagAmountInput" class="form-control" id="tag-amount"pattern="\d*">
+              <input type="number" step="0.01" v-model="formCustomTagAmount" ref="customTagAmountInput" class="form-control" id="tag-amount"pattern="\d*">
               <button class="btn btn-success" style="margin-left: 5px;">Submit</button>
             </form>
           </div>
@@ -83,16 +83,13 @@
     },
     computed: {
       clients: function() {
-        console.log("clients")
         return this.initClients
       },
       untaggedAmount: function() {
-        console.log("untaggedAmount")
         return (this.ticket.amount_wagered - this.amountTagged())
       }
     },
     created: function() {
-      console.log(this.initTicket)
       this.ticket = this.initTicket
     },
     methods: {

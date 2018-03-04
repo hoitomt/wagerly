@@ -9,6 +9,10 @@ class TicketsController < ApplicationController
     @tickets = scope
   end
 
+  def untagged
+    @tickets = Ticket.untagged
+  end
+
   def show
     # This is a hack to get the vuejs template to work
     @tickets = Ticket.where(sb_bet_id: params[:id])

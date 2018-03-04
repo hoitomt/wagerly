@@ -1,1 +1,5 @@
 <h1>Welcome to Wagerly</h1>
+
+<% if user_signed_in? && @untagged_tickets.present? %>
+  Please resolve the <%= link_to 'tagging discrepancies', untagged_tickets_path %>
+<% end %>

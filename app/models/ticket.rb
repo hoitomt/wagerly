@@ -6,6 +6,17 @@ class Ticket < ApplicationRecord
 
   validates_uniqueness_of :sb_bet_id
 
+  scope :untagged, -> {
+    find_by_sql("select twt.* from (
+      select t.*, sum(tt.amount) as amount_tagged
+      from tickets t
+      join ticket_tags tt on tt.ticket_id = t.id
+      group by t.id
+    ) as twt
+    where amount_tagged != amount_wagered
+    order by twt.wager_date DESC")
+  }
+
   def self.search(params)
     tickets = Ticket.order('wager_date DESC')
     if params[:page].to_i > 1

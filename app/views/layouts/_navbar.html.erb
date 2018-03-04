@@ -25,7 +25,7 @@
           <%= link_to 'Tickets', tickets_path, class: "nav-link dropdown-toggle", id: "ticket-dropdown", "data-toggle" => "dropdown", "aria-haspopup" => true, "aria-expanded" => false %>
           <div class="dropdown-menu" aria-labelledby="ticket-dropdown">
             <%= link_to 'All', tickets_path, class: "dropdown-item" %>
-            <%= link_to 'Untagged', tickets_path(untagged: true), class: "dropdown-item" %>
+            <%= link_to 'Untagged', untagged_tickets_path, class: "dropdown-item" %>
           </div>
         </li>
       <% end %>
