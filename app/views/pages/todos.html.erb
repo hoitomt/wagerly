@@ -2,6 +2,37 @@
 
 <ul>
   <li>Show financials - summary of the selected year on the clients page. Full view on a financials page</li>
+  <li>Sort Pending tickets to the top</li>
   <li>Show a summary of tickets by clicking on a row in the table in this page. Do not leave the view</li>
   <li>Add Date Filter</li>
 </ul>
+
+Won: won
+Lost: lost
+Pending: null
+No Action: no action
+Cashed Out: cashed out
+
+amount_paid include the wagered amount
+
+Amount Wagered
+Retrieve all ticket_tags that belong to client and are between the start and stop dates
+Summarize the amounts - this is the amount wagered.
+Amount Wagered is the starting point for how much a client has bet
+
+Amount Won
+start with ticket tags that belong to client and are between the start and stop dates
+Find corresponding tickets where outcome = "won" or "cashed out"
+Use the amount_wagered from the ticket and the amount of the ticket_tag to determine what percentage of the ticket the client is entitled to
+Use the percentage to determine how much of the amount_paid the client is entitled to: client_amount_paid
+Summarize the total client_amount_paid on the tickets
+
+Amount Pushed - add to amount won
+
+Amount Pending
+start with ticket tags that belong to client and are between the start and stop dates
+Find corresponding tickets where outcome is null
+Summarize the amounts from the ticket tag
+
+Summary, also equivalent to amount lost
+Amount Won - Amount Wagered

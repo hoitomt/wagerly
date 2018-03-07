@@ -47,7 +47,7 @@ describe SB::ParseTickets do
       end
 
       it "has the correct outcome" do
-        expect(SB::ParseTickets.sb_outcome(panel)).to eq('Wager Won')
+        expect(SB::ParseTickets.sb_outcome(panel)).to eq('won')
       end
 
       it "has the correct amount paid" do
@@ -80,7 +80,7 @@ describe SB::ParseTickets do
         end
 
         it "has the correct outcome" do
-          expect(ticket.outcome).to eq('Wager Won')
+          expect(ticket.outcome).to eq('won')
         end
 
         it "has the correct amount paid" do
@@ -105,7 +105,7 @@ describe SB::ParseTickets do
         end
 
         it "has the correct outcome" do
-          expect(ticket.outcome).to eq('Wager Won')
+          expect(ticket.outcome).to eq('won')
         end
 
         it "has the correct amount paid" do
@@ -139,6 +139,28 @@ describe SB::ParseTickets do
 
     it 'has the correct description' do
       expect(line_item[:description]).to eq('Kansas +7 (-110)')
+    end
+  end
+
+  describe 'Lost Ticket' do
+    let(:panel){SB::ParseTickets.result_panels(wager_data)[1]}
+    let(:ticket){SB::ParseTickets.build_ticket(panel)}
+
+    it 'has the correct outcome' do
+      expect(ticket.outcome).to eq('lost')
+    end
+  end
+
+  describe 'Pending Ticket' do
+    let(:wager_data){Fixtures.sb_pending}
+    let(:ticket){SB::ParseTickets.build_ticket(panel)}
+
+    it 'has the correct outcome' do
+      expect(ticket.outcome).to be_nil
+    end
+
+    it 'has the correct amount_paid' do
+      expect(ticket.amount_paid).to be_nil
     end
   end
 

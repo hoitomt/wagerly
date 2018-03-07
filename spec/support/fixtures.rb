@@ -19,6 +19,10 @@ module Fixtures
     polish File.read("spec/files/sb_response_3_line_items.html")
   end
 
+  def self.sb_pending
+    polish File.read("spec/files/sb_pending_2018.html")
+  end
+
   def self.polish(doc)
     doc.gsub!(/\\r|\\t|\\n|\\/, '')
     doc.gsub!(/\s{2,}/, ' ')

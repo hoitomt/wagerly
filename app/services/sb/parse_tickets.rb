@@ -64,7 +64,18 @@ module SB
       end
 
       def sb_outcome(panel)
-        panel.xpath("div[contains(@class,'tkt-details')]//span[contains(@id, 'betResult')]").text
+        outcome = panel.xpath("div[contains(@class,'tkt-details')]//span[contains(@id, 'betResult')]").text
+        if outcome =~ /lost/i
+          "lost"
+        elsif outcome =~ /won/i
+          "won"
+        elsif outcome =~ /no action/i
+          "no action"
+        elsif outcome =~ /cashed out/i
+          "cashed out"
+        else
+          nil
+        end
       end
 
       def sb_amount_paid(panel)
