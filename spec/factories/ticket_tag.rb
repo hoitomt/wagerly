@@ -2,6 +2,6 @@ FactoryBot.define do
   factory :ticket_tag do
     ticket
     tag
-    amount 7
+    amount 5
   end
 end

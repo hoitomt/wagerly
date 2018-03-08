@@ -7,15 +7,20 @@ FactoryBot.define do
     amount_to_win 9.09
 
     trait :pending do
-      outcome "Pending"
+      outcome "pending"
     end
 
     trait :won do
-      outcome "Won"
+      outcome "won"
+      amount_paid 19.09
     end
 
     trait :lost do
-      outcome "Lost"
+      outcome "lost"
+    end
+
+    trait :cashed_out do
+      outcome "cashed_out"
     end
   end
 end

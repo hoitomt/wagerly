@@ -1,26 +1,37 @@
 class Finance
-  def self.amount_won(client, start_date, stop_date)
+
+  def initialize(client, start_date, stop_date)
+    @client = client
+    @start_date = start_date
+    @stop_date = stop_date
+  end
+
+  def tickets_won
+    tickets_by_outcomes('won', 'cashed out')
+  end
+
+  def amount_won
+    sql = <<-SQL
+    SELECT sum((ticket_tags.amount / tickets.amount_wagered) * tickets.amount_paid)
+    FROM ticket_tags
+    JOIN tickets on ticket_tags.ticket_id = tickets.id
+    where ticket_tags.client_id = #{@client.id}
+      AND tickets.wager_date > '#{@start_date}'
+      AND tickets.wager_date < '#{@stop_date}'
+      AND tickets.outcome in ('won', 'cashed_out')
+    SQL
+    ActiveRecord::Base.connection.execute(sql).first['sum']
+  end
+
+  def tickets_by_outcomes(*outcomes)
     TicketTag.joins(:ticket)
-             .select("ticket_tags.*,
-                     (ticket_tags.amount / tickets.amount_wagered) as ticket_percent,
-                     (((ticket_tags.amount / tickets.amount_wagered) * tickets.amount_paid) + ticket_tags.amount) as won_amount")
-             .where("client_id = ?
-                     AND tickets.wager_date > ?
-                     AND tickets.wager_date < ?
-                     AND (tickets.outcome = 'won' OR tickets.outcome = 'cashed out')",
-                     client.id, start_date, stop_date)
+              .select("ticket_tags.*,
+                  (ticket_tags.amount / tickets.amount_wagered) as ticket_percent,
+                  ((ticket_tags.amount / tickets.amount_wagered) * tickets.amount_paid) as won_amount")
+              .where("ticket_tags.client_id = ?
+                  AND tickets.wager_date > ?
+                  AND tickets.wager_date < ?
+                  AND tickets.outcome in (?)",
+                  @client.id, @start_date, @stop_date, outcomes)
   end
 end
-
-
-
-# select t.*,
-#       (tt.amount / t.amount_wagered) as ticket_percent,
-#       ((tt.amount / t.amount_wagered) * t.amount_paid) as won_amount
-#       from ticket_tags tt
-#       join tickets t on tt.ticket_id = t.id
-#       where tt.client_id = 2
-#       and t.wager_date > '2017-07-01'
-#       and t.wager_date < '2018-06-30'
-#       and (t.outcome = 'won' OR t.outcome = 'cashed out')
-#       order by t.wager_date DESC;
