@@ -12,7 +12,7 @@ function getCsrfToken() {
 }
 
 export const HTTP = axios.create({
-  baseURL: `http://localhost:3000/`,
+  baseURL: window.location.origin,
   headers: {
     "X-CSRF-Token": getCsrfToken()
   }

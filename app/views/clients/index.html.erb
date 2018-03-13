@@ -6,19 +6,20 @@
   <tr>
     <th>First Name</th>
     <th>Last Name</th>
-    <th>Email</th>
     <th>Amount Wagered</th>
     <th>Amount Won</th>
+    <th>Summary</th>
     <th></th>
     <th></th>
   </tr>
   <% @clients.each do |client| %>
+    <% finance = Finance.new(client, session[:start_date], session[:stop_date]) %>
     <tr>
       <td><%= client.first_name %></td>
       <td><%= client.last_name %></td>
-      <td><%= client.email %></td>
-      <td></td>
-      <td></td>
+      <td><%= number_to_currency(finance.amount_wagered) %></td>
+      <td><%= number_to_currency(finance.amount_won) %></td>
+      <td><%= number_to_currency(finance.summary) %></td>
       <td><%= link_to 'Summary', client_path(client), class: 'btn btn-primary' %></td>
       <td><%= link_to 'Delete', client_path(client), method: :delete, class: 'btn btn-danger' %></td>
     </tr>

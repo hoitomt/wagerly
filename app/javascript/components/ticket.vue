@@ -169,7 +169,7 @@
         else if ( this.lost(ticket) )
           return 'bg-danger'
         else
-          return 'bg-dark'
+          return 'bg-info'
       },
       submitCustomTag: function(event) {
         console.log(this.selectedClient.full_name)
@@ -198,6 +198,8 @@
         } else if (this.undertagged()) {
           // Undertagged
           return "lighten_50"
+        } else {
+          return ""
         }
       },
       tagWithClient: function(ticket, client) {

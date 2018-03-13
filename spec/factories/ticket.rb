@@ -1,13 +1,13 @@
 FactoryBot.define do
   factory :ticket do
     sequence(:sb_bet_id)
-    wager_date "2015-09-03 17:06:00"
+    wager_date DateTime.now
     wager_type "Straight Wager"
     amount_wagered 10.0
     amount_to_win 9.09
 
     trait :pending do
-      outcome "pending"
+      outcome nil
     end
 
     trait :won do

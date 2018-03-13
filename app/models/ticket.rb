@@ -50,4 +50,23 @@ class Ticket < ApplicationRecord
   def amount_tagged
     self.ticket_tags.inject(0){|sum, tt| sum += tt.amount}
   end
+
+  # Save for a rainy day - Bad practice but I want to keep this knowledge
+
+  # def self.tickets_won(client, start_date, stop_date)
+  #   tickets_by_outcomes(client, start_date, stop_date, 'won', 'cashed out')
+  # end
+
+  # def self.tickets_by_outcomes(client, start_date, stop_date, *outcomes)
+  #   TicketTag.joins(:ticket)
+  #             .select("ticket_tags.*,
+  #                 (ticket_tags.amount / tickets.amount_wagered) as ticket_percent,
+  #                 ((ticket_tags.amount / tickets.amount_wagered) * tickets.amount_paid) as won_amount")
+  #             .where("ticket_tags.client_id = ?
+  #                 AND tickets.wager_date > ?
+  #                 AND tickets.wager_date < ?
+  #                 AND tickets.outcome in (?)",
+  #                 client.id, start_date, stop_date, outcomes)
+  # end
+
 end
