@@ -192,11 +192,8 @@
         })
       },
       taggedStatusClass: function() {
-        if(this.overtagged()) {
+        if(this.overtagged() || this.undertagged()) {
           // Overtagged
-          return "gray-background"
-        } else if (this.undertagged()) {
-          // Undertagged
           return "lighten_50"
         } else {
           return ""
