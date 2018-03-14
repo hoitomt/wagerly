@@ -7,14 +7,16 @@ class Ticket < ApplicationRecord
   validates_uniqueness_of :sb_bet_id
 
   scope :untagged, -> {
-    find_by_sql("select twt.* from (
-      select t.*, sum(tt.amount) as amount_tagged
-      from tickets t
-      join ticket_tags tt on tt.ticket_id = t.id
-      group by t.id
-    ) as twt
-    where amount_tagged != amount_wagered
-    order by twt.wager_date DESC")
+    find_by_sql("With TWT as
+      ( SELECT t.*, sum(tt.amount) as amount_tagged
+      FROM tickets t
+      LEFT JOIN ticket_tags tt on t.id = tt.ticket_id
+      GROUP BY t.id
+      ORDER BY t.wager_date DESC )
+
+      SELECT *
+      FROM TWT
+      WHERE coalesce(amount_tagged,0) <> amount_wagered")
   }
 
   def self.search(params)

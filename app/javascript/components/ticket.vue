@@ -6,7 +6,7 @@
       </a>
       <div style="margin-top: 5px;">
         <p class="white small small-list" v-for="ticketLineItem in ticket.ticket_line_items">
-          {{ ticketLineItem.description}}
+          {{ ticketLineItem.description }}
         </p>
       </div>
     </div>
