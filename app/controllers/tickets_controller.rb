@@ -18,5 +18,11 @@ class TicketsController < ApplicationController
     @tickets = Ticket.where(sb_bet_id: params[:id])
     @ticket = @tickets.first
   end
+
+  def sync
+    sb = SB::SportsbookData.new(ENV['SB_USERNAME'], ENV['SB_PASSWORD'])
+    tickets = sb.recent_tickets(Date.today)
+    render json: {success: true}, status: 200
+  end
 end
 

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :tickets, only: [:index, :show] do
     collection do
       get 'untagged', as: 'untagged'
+      get 'sync', as: 'sync'
     end
   end
   resources :ticket_tags, only: [:create, :destroy]

@@ -28,6 +28,22 @@
             <%= link_to 'Untagged', untagged_tickets_path, class: "dropdown-item" %>
           </div>
         </li>
+        <li>
+          <%= link_to sync_tickets_path, class: "nav-link sync-link", remote: true do %>
+          Sync
+          <% end %>
+          <script type="text/javascript">
+            $('.sync-link').bind('ajax:beforeSend', function() {
+              console.log("Send");
+              // $('#mySpinner').show();
+            });
+
+            $('.sync-link').bind('ajax:complete', function() {
+              console.log("Return");
+              // $('#mySpinner').hide();
+            });
+          </script>
+        </li>
       <% end %>
     </ul>
     <ul class="navbar-nav">
