@@ -1,12 +1,12 @@
 <template>
   <div class="card">
-    <div :class="'card-header ' + resultClass(ticket) + ' ' + taggedStatusClass()" :id="'heading-' + ticket.id">
+    <div :class="'card-header ' + resultClass(ticket)" :id="'heading-' + ticket.id">
       <a class="accordian-link" :href="'#collapse-' + ticket.id" data-toggle="collapse" :data-target="'#collapse-' + ticket.id" aria-expanded="false" :aria-controls="'collapse_' + ticket.id">
         {{ description(ticket) }}<span v-if="untaggedAmount != 0"> - ({{untaggedAmount | currency}})</span>
       </a>
       <div style="margin-top: 5px;">
         <p class="white small small-list" v-for="ticketLineItem in ticket.ticket_line_items">
-          {{ ticketLineItem.description }}
+          {{ ticketLineItem.description}}
         </p>
       </div>
     </div>
@@ -37,9 +37,8 @@
         <div>
           <button v-for="client in clients"
                   :class="'btn ' + isSelectedClient(ticket, client)"
-                  style="margin-right: 5px;"
-                  v-on:click="tagWithClient(ticket, client)"
-                  ng-class=" ? 'btn-danger' : ' btn-primary' ">
+                  style="margin: 0 5px 5px 0;"
+                  v-on:click="tagWithClient(ticket, client)">
             {{client.full_name}}
           </button>
         </div>
@@ -190,14 +189,6 @@
         .catch(e => {
           console.log(e)
         })
-      },
-      taggedStatusClass: function() {
-        if(this.overtagged() || this.undertagged()) {
-          // Overtagged
-          return "lighten_50"
-        } else {
-          return ""
-        }
       },
       tagWithClient: function(ticket, client) {
         this.showCustomTagAmount = false
