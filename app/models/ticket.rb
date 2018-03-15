@@ -19,6 +19,17 @@ class Ticket < ApplicationRecord
       WHERE coalesce(amount_tagged,0) <> amount_wagered")
   }
 
+  scope :sorted, -> {
+    sql = <<-SQL
+      tickets.*,
+      CASE
+        WHEN (outcome IS NULL) THEN 1
+        ELSE 2
+      END as numeric_outcome
+    SQL
+    select(sql).order('numeric_outcome ASC, wager_date DESC')
+  }
+
   def self.search(params)
     tickets = Ticket.order('wager_date DESC')
     if params[:page].to_i > 1
@@ -29,28 +40,36 @@ class Ticket < ApplicationRecord
     tickets
   end
 
-  def wager_date_display
-    self.wager_date ? self.wager_date.strftime("%-m/%-d/%Y") : ""
+  def as_vue
+    self.as_json(methods: [:description], include: {ticket_tags: {methods: :tag_name} })
   end
 
-  def won?
-    self.outcome =~ /won/i
+  def amount_tagged
+    self.ticket_tags.inject(0){|sum, tt| sum += tt.amount}
   end
 
-  def lost?
-    self.outcome =~ /lost/i
+  def description
+    self.ticket_line_items.map{|tle| tle.description}
   end
 
   def is_tagged?
     untagged_amount == 0
   end
 
+  def lost?
+    self.outcome =~ /lost/i
+  end
+
   def untagged_amount
     (amount_wagered - amount_tagged).round(2)
   end
 
-  def amount_tagged
-    self.ticket_tags.inject(0){|sum, tt| sum += tt.amount}
+  def wager_date_display
+    self.wager_date ? self.wager_date.strftime("%-m/%-d/%Y") : ""
+  end
+
+  def won?
+    self.outcome =~ /won/i
   end
 
   # Save for a rainy day - Bad practice but I want to keep this knowledge

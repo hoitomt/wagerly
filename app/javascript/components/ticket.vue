@@ -5,8 +5,8 @@
         {{ description(ticket) }}<span v-if="untaggedAmount != 0"> - ({{untaggedAmount | currency}})</span>
       </a>
       <div style="margin-top: 5px;">
-        <p class="white small small-list" v-for="ticketLineItem in ticket.ticket_line_items">
-          {{ ticketLineItem.description}}
+        <p class="white small small-list" v-for="desc in ticket.description">
+          {{ desc }}
         </p>
       </div>
     </div>

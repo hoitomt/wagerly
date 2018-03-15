@@ -3,7 +3,7 @@ class TicketTagsController < ApplicationController
     ticket = Ticket.find(params[:ticket_id])
     ticket_tag = TicketTag.new(ticket_tag_params)
     if ticket_tag.save
-      render json: ticket.as_json(include: {ticket_tags: {methods: :tag_name}, ticket_line_items: {} }), status: 200
+      render json: ticket.as_vue, status: 200
     else
       render json: {errors: ticket_tag.errors.full_messages}, status: 422
     end
@@ -13,7 +13,7 @@ class TicketTagsController < ApplicationController
     ticket_tag = TicketTag.find_by_id(params[:id])
     ticket = ticket_tag.ticket
     if ticket_tag && ticket_tag.destroy
-      render json: ticket.as_json(include: {ticket_tags: {methods: :tag_name}, ticket_line_items: {} }), status: 200
+      render json: ticket.as_vue, status: 200
     else
       render json: {errors: ticket_tag.errors.full_messages}, status: 422
     end
