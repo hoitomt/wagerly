@@ -49,7 +49,21 @@ class Ticket < ApplicationRecord
   end
 
   def description
-    self.ticket_line_items.map{|tle| tle.description}
+    self.ticket_line_items.map do |tle|
+      if self.outcome.nil? #pending
+        if tle.away_team.blank? || tle.home_team.blank? #future bet
+          tle.description
+        else
+          "#{tle.away_team} at #{tle.home_team} (#{tle.description})"
+        end
+      else
+        if tle.away_team.blank? || tle.home_team.blank? #future bet
+          tle.description
+        else
+          "#{tle.away_team} #{tle.away_score} at #{tle.home_team} #{tle.home_score} (#{tle.description})"
+        end
+      end
+    end
   end
 
   def is_tagged?

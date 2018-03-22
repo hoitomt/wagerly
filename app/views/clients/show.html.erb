@@ -1,5 +1,8 @@
 <h1><%= @client.full_name %></h1>
 
+<h2>Finances</h2>
+<%= render partial: "clients/finances", locals: {client: @client} %>
+
 <h2>Tickets</h2>
 
 <%= render partial: "tickets/accordian_list", locals: {tickets: @tickets, clients: current_user.clients} %>

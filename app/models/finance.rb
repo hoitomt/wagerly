@@ -6,6 +6,11 @@ class Finance
     @stop_date = stop_date
   end
 
+  # displays negative summary as a negative number
+  def display_summary
+    -1 * amount_wagered - amount_pending + amount_won
+  end
+
   def summary
     amount_won.to_f - amount_wagered.to_f
   end

@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  helper_method :start_date, :stop_date
+
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :start_date
   before_action :stop_date

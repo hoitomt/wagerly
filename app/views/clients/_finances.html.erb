@@ -1,0 +1,25 @@
+<% finances = Finance.new(client, start_date, stop_date) %>
+
+<div class=row>
+  <div class="col-sm-4">
+    <table class="table">
+      <tr class="table-danger">
+        <th>Amount Wagered</th>
+        <td><%= number_to_currency finances.amount_wagered %></td>
+      </tr>
+      <tr class="table-danger">
+        <th>Amount Pending</th>
+        <td><%= number_to_currency finances.amount_pending %></td>
+      </tr>
+      <tr class="table-success">
+        <th>Amount Won</th>
+        <td><%= number_to_currency finances.amount_won %></td>
+      </tr>
+      <tr class="<%= finances.display_summary >= 0 ? "table-success" : "table-danger" %>">
+        <th>Summary</th>
+        <td><%= number_to_currency(finances.display_summary) %></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
