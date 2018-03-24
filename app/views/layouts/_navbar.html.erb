@@ -30,17 +30,20 @@
         </li>
         <li>
           <%= link_to sync_tickets_path, class: "nav-link sync-link", remote: true do %>
-          Sync
+            <span id="before-send">Sync</span>
+            <span id="loading" style="display: none">Loading</span>
           <% end %>
           <script type="text/javascript">
             $('.sync-link').bind('ajax:beforeSend', function() {
               console.log("Send");
-              // $('#mySpinner').show();
+              $('#before-send').hide();
+              $('#loading').show();
             });
 
             $('.sync-link').bind('ajax:complete', function() {
               console.log("Return");
-              // $('#mySpinner').hide();
+              $('#before-send').show();
+              $('#loading').hide();
             });
           </script>
         </li>
