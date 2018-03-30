@@ -15,7 +15,7 @@
         <th>Amount Won</th>
         <td><%= number_to_currency finances.amount_won %></td>
       </tr>
-      <tr class="<%= finances.display_summary >= 0 ? "table-success" : "table-danger" %>">
+      <tr class="<%= finances.summary >= 0 ? "table-success" : "table-danger" %>">
         <th>Summary</th>
         <td><%= number_to_currency(finances.summary) %></td>
       </tr>
