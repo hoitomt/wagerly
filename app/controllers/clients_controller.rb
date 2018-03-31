@@ -1,4 +1,15 @@
 class ClientsController < ApplicationController
+  before_action :authenticate_user!
+
+  def audit
+    @client = Client.find(params[:client_id])
+
+    scope = Ticket.where("wager_date > ? and wager_date < ?", start_date, stop_date).sorted
+    scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", @client.id)
+
+    @tickets = scope
+  end
+
   def index
     @clients = current_user.clients.order(:last_name)
   end

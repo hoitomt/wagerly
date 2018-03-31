@@ -48,6 +48,12 @@ class Ticket < ApplicationRecord
     self.ticket_tags.inject(0){|sum, tt| sum += tt.amount}
   end
 
+  def amount_tagged_by(client)
+    self.ticket_tags.where(client_id: client.id).inject(0) do |sum, tli|
+      sum += tli.amount
+    end
+  end
+
   def description
     self.ticket_line_items.map do |tle|
       if self.outcome.nil? #pending

@@ -15,7 +15,8 @@ class TicketsController < ApplicationController
 
   def show
     # This is a hack to get the vuejs template to work
-    @tickets = Ticket.where(sb_bet_id: params[:id])
+    # Need @tickets array to get the view to work
+    @tickets = Ticket.where(id: params[:id])
     @ticket = @tickets.first
   end
 

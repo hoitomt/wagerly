@@ -1,3 +1,7 @@
+<% if @untagged_tickets.present? %>
+  Please resolve the <%= link_to 'tagging discrepancies', untagged_tickets_path %>
+<% end %>
+
 <h1>Clients</h1>
 
 <%= link_to 'New Client', new_client_path, class: 'btn btn-primary' %>
@@ -11,6 +15,7 @@
     <th>Balance</th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
   <% @clients.each do |client| %>
     <% finance = Finance.new(client, session[:start_date], session[:stop_date]) %>
@@ -21,6 +26,7 @@
       <td><%= number_to_currency(finance.amount_won) %></td>
       <td><%= number_to_currency(finance.summary) %></td>
       <td><%= link_to 'Summary', client_path(client), class: 'btn btn-primary' %></td>
+      <td><%= link_to 'Audit', client_audit_path(client), class: 'btn btn-info'  %></td>
       <td><%= link_to 'Delete', client_path(client), method: :delete, class: 'btn btn-danger' %></td>
     </tr>
   <% end %>
