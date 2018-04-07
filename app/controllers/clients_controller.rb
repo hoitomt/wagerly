@@ -12,6 +12,7 @@ class ClientsController < ApplicationController
 
   def index
     @clients = current_user.clients.order(:last_name)
+    @untagged_tickets = Ticket.untagged
   end
 
   def show
