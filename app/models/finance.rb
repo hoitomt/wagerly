@@ -7,7 +7,7 @@ class Finance
   end
 
   def summary
-    amount_won.to_f - amount_wagered.to_f
+    transactions.to_f + amount_won.to_f - amount_wagered.to_f
   end
 
   def amount_lost
@@ -24,6 +24,20 @@ class Finance
     @amount_wagered ||= TicketTag.joins(:ticket)
              .where("ticket_tags.client_id = ? AND tickets.wager_date >= ? AND tickets.wager_date <= ?", @client.id, @start_date, @stop_date)
              .sum(:amount)
+  end
+
+  def transactions
+    @transactions ||= @client.transactions
+              .where("created_at >= ? AND created_at <= ?", @start_date, @stop_date)
+              .sum(:amount)
+  end
+
+  def reload!
+    @amount_wagered = nil
+    @amount_pending = nil
+    @amount_won = nil
+    @transactions = nil
+    self
   end
 
   def amount_won

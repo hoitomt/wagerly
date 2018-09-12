@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root to: 'clients#index'
 
   resources :clients do
+    resources :transactions, only: [:index, :new, :create]
     get 'audit', as: 'audit'
   end
 
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
     end
   end
   resources :ticket_tags, only: [:create, :destroy]
+
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 

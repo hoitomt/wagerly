@@ -18,7 +18,7 @@
     <% summary = ticket.amount_paid.to_f * (responsible_amount.to_f/ticket_amount.to_f) - responsible_amount %>
     <tr>
       <td><%= link_to ticket.sb_bet_id, ticket_path(ticket) %></td>
-      <td><%= ticket.wager_date.strftime("%Y-%b-%d") %></td>
+      <td><%= display_date(ticket.wager_date) %></td>
       <td><%= ticket.outcome %></td>
       <td><%= number_to_currency(ticket_amount) %></td>
       <td><%= number_to_currency(responsible_amount) %></td>

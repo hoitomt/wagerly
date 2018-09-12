@@ -168,7 +168,7 @@
         else if ( this.lost(ticket) )
           return 'bg-danger'
         else
-          return 'bg-info'
+          return 'bg-warning'
       },
       submitCustomTag: function(event) {
         console.log(this.selectedClient.full_name)

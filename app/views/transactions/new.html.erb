@@ -1,0 +1,36 @@
+<h2>New Transaction for <%= @client.full_name %></h2>
+
+<%= link_to 'New Deposit', 'javascript:void(0)', class: 'btn btn-success bottom-margin', id: 'new-deposit-btn' %>
+<%= link_to 'New withdrawal', 'javascript:void(0)', class: 'btn btn-success bottom-margin', id: 'new-withdrawal-btn' %>
+
+<div class="col-6 gray-background top-padding-with-radius" id="deposit-form-container" style="display: none;">
+  <%= simple_form_for @transaction, url: client_transactions_path(@client), html: { class: 'form-horizontal' } do |f| %>
+    <%= f.input :client_id, as: :hidden %>
+    <%= f.input :deposit %>
+    <%= f.button :submit, class: 'btn btn-success' %>
+    <%= link_to 'Cancel', client_transactions_path(@client), class: 'btn btn-danger' %>
+  <% end %>
+</div>
+
+<div class="col-6 gray-background top-padding-with-radius" id="withdrawal-form-container" style="display: none;">
+  <%= simple_form_for @transaction, url: client_transactions_path(@client), html: { class: 'form-horizontal' } do |f| %>
+    <%= f.input :client_id, as: :hidden %>
+    <%= f.input :withdrawal %>
+    <%= f.button :submit, class: 'btn btn-success' %>
+    <%= link_to 'Cancel', client_transactions_path(@client), class: 'btn btn-danger' %>
+  <% end %>
+</div>
+
+<script>
+  $(function() {
+    $('#new-deposit-btn').click(function() {
+      $('#deposit-form-container').toggle();
+      $('#withdrawal-form-container').hide();
+    });
+
+    $('#new-withdrawal-btn').click(function() {
+      $('#deposit-form-container').hide();
+      $('#withdrawal-form-container').toggle();
+    });
+  })
+</script>
