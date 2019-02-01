@@ -39,6 +39,11 @@ module SB
       end.flatten.compact
     end
 
+    def bets_for_url(url)
+      bets_doc = polish(SB::Sportsbook.get_bets_data(config, url))
+      SB::ParseBets.process(bets_doc)
+    end
+
     private
 
     def all_pages_of_tickets(start_date, page)

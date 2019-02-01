@@ -18,6 +18,17 @@ module SB
       sb.get_wager_data(args)
     end
 
+    def self.get_bets_data(config, url, args={})
+      sb = self.new(config)
+      if args[:force_login]
+        sb.login
+      else
+        sb.login if sb.expired_cookies?
+      end
+      puts "Cookie File exists #{File.exists?(sb.cookie_path)}"
+      sb.get_bets_data(url, args)
+    end
+
     def initialize(config)
       @config = config
     end
@@ -34,6 +45,12 @@ module SB
       page = args[:page] || 1
       cmd = curl_wager_cmd(page, start_date)
       puts "SB Wager Data Request: #{cmd}"
+      `#{cmd}`
+    end
+
+    def get_bets_data(url, args)
+      cmd = curl_bets_cmd(url, args)
+      puts "SB Bets Data Request: #{cmd}"
       `#{cmd}`
     end
 
@@ -67,6 +84,13 @@ module SB
    -d "page=#{page - 1}" \
    -d "customDateRangeDate=#{start_date}" #{Rails.configuration.SB_WAGERS_URL}
   EOFX
+    end
+
+    def curl_bets_cmd(url, args)
+      <<-EOBETS
+  curl --cookie #{cookie_path} -L #{url}
+  EOBETS
+
     end
 
     def query_date(d)
