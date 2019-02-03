@@ -18,7 +18,7 @@ class ClientsController < ApplicationController
   def show
     @client = Client.find(params[:id])
 
-    limit = params[:limit] || 20
+    limit = params[:limit] || 50
     scope = Ticket.limit(limit).sorted
     scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", @client.id)
 
