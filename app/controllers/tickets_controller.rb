@@ -1,6 +1,6 @@
 class TicketsController < ApplicationController
   def index
-    limit = params[:limit] || 20
+    limit = params[:limit] || 50
     scope = Ticket.limit(limit).sorted
     if params[:client_id]
       scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", params[:client_id])

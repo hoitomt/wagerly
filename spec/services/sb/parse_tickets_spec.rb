@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SB::ParseTickets do
   let(:wager_data){Fixtures.raw_wager_data_2017}

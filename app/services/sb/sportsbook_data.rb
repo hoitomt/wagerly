@@ -41,7 +41,7 @@ module SB
 
     def bets_for_url(url)
       bets_doc = polish(SB::Sportsbook.get_bets_data(config, url))
-      SB::ParseBets.process(bets_doc)
+      # SB::ParseBets.process(bets_doc)
     end
 
     private

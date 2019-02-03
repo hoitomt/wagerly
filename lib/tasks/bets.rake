@@ -5,6 +5,7 @@ namespace :bets do
     url = args[:url]
     puts "Get all bets from #{url}"
     sb = SB::SportsbookData.new(ENV['SB_USERNAME'], ENV['SB_PASSWORD'])
-    puts sb.bets_for_url(url)
+    ndoc = sb.bets_for_url(url)
+    puts ndoc.css('div.eventbox').to_s
   end
 end

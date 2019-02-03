@@ -27,6 +27,14 @@ module Fixtures
     polish File.read("spec/files/bets_game_2019.html")
   end
 
+  def self.bets_props_2019
+    polish File.read("spec/files/bets_props_2019.html")
+  end
+
+  def self.bets_gatorade_bath_2019
+    polish File.read("spec/files/bets_gatorade_bath_2019.html")
+  end
+
   def self.polish(doc)
     doc.gsub!(/\\r|\\t|\\n|\\/, '')
     doc.gsub!(/\s{2,}/, ' ')

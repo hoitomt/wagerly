@@ -1,27 +1,45 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SB::ParseBets do
   subject{ described_class }
 
-  let(:wager_data){Fixtures.bets_game_2019}
-  # let(:panel){SB::ParseBets.result_panels(wager_data).first}
-  # let(:game){SB::ParseBets.games(panel).first}
-  # let(:line_item){SB::ParseBets.create_line_item(game)}
+  describe 'single game' do
+    let(:wager_data){Fixtures.bets_game_2019}
 
-  describe "all bets from page" do
-    it 'parses bets' do
-      ndoc = subject.process(wager_data)
+    describe "all bets from page" do
+      it 'creates json from the row' do
+        ndoc = subject.process(wager_data)
+        expect(ndoc.size).to eq 1
+        expect(ndoc.first[:heading]).to eq ''
+        expect(ndoc.first[:time]).to eq "18:30 EST18:30 EST"
+        expect(ndoc.first[:rows].size).to eq 2
+        expect(ndoc.first[:rows].first[:row_title]).to eq 'New England Patriots'
+      end
+    end
+  end
+
+  describe 'props' do
+    let(:wager_data){Fixtures.bets_props_2019}
+
+    describe "all bets from page" do
+      it 'creates json from the row' do
+        ndoc = subject.process(wager_data)
+        expect(ndoc.size).to eq 71
+        expect(ndoc.first[:heading]).to eq 'Super Bowl LIII - Coin Toss'
+      end
+    end
+  end
+
+  describe 'gatorade bath' do
+    let(:wager_data){Fixtures.bets_gatorade_bath_2019}
+
+    describe "all bets from page" do
+      it 'creates json from the row' do
+        ndoc = subject.process(wager_data)
+        expect(ndoc.first[:heading]).to eq ''
+      end
     end
 
-    # it "create_tickets" do
-    #   expect {
-    #     SB::ParseTickets.create_tickets(wager_data)
-    #   }.to change(Ticket, :count).by(15)
-    # end
-
-    # it "result_panels" do
-    #   expect(SB::ParseTickets.result_panels(wager_data).length).to eq(15)
-    # end
   end
 
 end

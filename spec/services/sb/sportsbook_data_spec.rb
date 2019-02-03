@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SB::SportsbookData do
   subject {SB::SportsbookData.new('user', 'password')}
