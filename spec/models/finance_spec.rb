@@ -8,6 +8,11 @@ RSpec.describe Finance, type: :model do
 
   let!(:client_2) { create :client, first_name: 'Marge', last_name: 'Simpson' }
 
+  # client: 9.5 + 8 - 1 - 20 - 8 + 20 = 8.5
+    # amount won: 9.5 + 8 = 17.5
+    # amount lost: 21
+    # amount pending: 8
+    # amount push: 20
   before do
     won_ticket_1 = create :ticket, :won, amount_wagered: 10, amount_to_win: 9.00, amount_paid: 19.00
     create :ticket_tag, ticket: won_ticket_1, client: client, amount: 5
@@ -27,6 +32,9 @@ RSpec.describe Finance, type: :model do
     pending_ticket_1 = create :ticket, :pending, amount_wagered: 16, amount_to_win: 14
     create :ticket_tag, ticket: pending_ticket_1, client: client, amount: 8
     create :ticket_tag, ticket: pending_ticket_1, client: client_2, amount: 8
+
+    push_ticket_1 = create :ticket, :push, amount_wagered: 20, amount_to_win: 14
+    create :ticket_tag, ticket: push_ticket_1, client: client, amount: 20
   end
 
   describe 'amount_won' do
@@ -37,13 +45,13 @@ RSpec.describe Finance, type: :model do
 
   describe 'amount_wagered' do
     it 'by client' do
-      expect(subject.amount_wagered).to eq 35
+      expect(subject.amount_wagered).to eq 55.0
     end
   end
 
   describe 'amount lost' do
     it 'by client' do
-      expect(subject.amount_lost).to eq 9.50
+      expect(subject.amount_lost).to eq 21
     end
   end
 

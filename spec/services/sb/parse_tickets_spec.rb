@@ -164,6 +164,19 @@ describe SB::ParseTickets do
     end
   end
 
+  describe 'Push Ticket' do
+    let(:wager_data){Fixtures.sb_push}
+    let(:ticket){SB::ParseTickets.build_ticket(panel)}
+
+    it 'has the correct outcome' do
+      expect(ticket.outcome).to eq 'no action'
+    end
+
+    it 'has the correct amount_paid' do
+      expect(ticket.amount_paid).to eq 5.0
+    end
+  end
+
   describe "parlay bet" do
     let(:panel){SB::ParseTickets.result_panels(wager_data)[13]}
     let(:game){SB::ParseTickets.games(panel).first}

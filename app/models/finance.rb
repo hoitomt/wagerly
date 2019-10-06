@@ -7,11 +7,13 @@ class Finance
   end
 
   def summary
-    transactions.to_f + amount_won.to_f - amount_wagered.to_f
+    transactions.to_f + amount_won.to_f - amount_wagered.to_f + amount_pushed.to_f
   end
 
   def amount_lost
-    amount_wagered - (amount_pending + amount_won)
+    @amount_pushed ||= TicketTag.joins(:ticket)
+             .where("tickets.outcome = 'lost' and ticket_tags.client_id = ? AND tickets.wager_date >= ? AND tickets.wager_date <= ?", @client.id, @start_date, @stop_date)
+             .sum(:amount)
   end
 
   def amount_pending
@@ -23,6 +25,12 @@ class Finance
   def amount_wagered
     @amount_wagered ||= TicketTag.joins(:ticket)
              .where("ticket_tags.client_id = ? AND tickets.wager_date >= ? AND tickets.wager_date <= ?", @client.id, @start_date, @stop_date)
+             .sum(:amount)
+  end
+
+  def amount_pushed
+    @amount_pushed ||= TicketTag.joins(:ticket)
+             .where("tickets.outcome = 'no action' and ticket_tags.client_id = ? AND tickets.wager_date >= ? AND tickets.wager_date <= ?", @client.id, @start_date, @stop_date)
              .sum(:amount)
   end
 
@@ -48,7 +56,7 @@ class Finance
     where ticket_tags.client_id = #{@client.id}
       AND tickets.wager_date >= '#{@start_date}'
       AND tickets.wager_date <= '#{@stop_date}'
-      AND tickets.outcome in ('won', 'cashed_out')
+      AND tickets.outcome in ('won', 'cashed out')
     SQL
     @amount_won ||= ActiveRecord::Base.connection.execute(sql).first['sum']
   end

@@ -19,6 +19,10 @@ FactoryBot.define do
       outcome "lost"
     end
 
+    trait :push do
+      outcome "no action"
+    end
+
     trait :cashed_out do
       outcome "cashed_out"
     end

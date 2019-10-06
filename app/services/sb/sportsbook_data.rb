@@ -3,6 +3,7 @@ module SB
     attr_accessor :username, :password, :pages
 
     GLOBAL_START_DATE = Date.new(2013, 7, 1)
+    SYNC_ALL_START_DATE = Date.new(2018, 7, 1)
 
     def initialize(username, password)
       @username = username
@@ -22,7 +23,7 @@ module SB
     end
 
     def all_tickets
-      date = GLOBAL_START_DATE
+      date = SYNC_ALL_START_DATE
       [].tap do |a|
         while date < Date.today
           tickets_for_start_date(date)

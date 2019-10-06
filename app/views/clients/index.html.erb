@@ -10,9 +10,9 @@
   <tr>
     <th>First Name</th>
     <th>Last Name</th>
+    <th>Balance</th>
     <th>Amount Wagered</th>
     <th>Amount Won</th>
-    <th>Balance</th>
     <th></th>
     <th></th>
     <th></th>
@@ -23,9 +23,9 @@
     <tr>
       <td><%= client.first_name %></td>
       <td><%= client.last_name %></td>
+      <td><%= number_to_currency(finance.summary) %></td>
       <td><%= number_to_currency(finance.amount_wagered) %></td>
       <td><%= number_to_currency(finance.amount_won) %></td>
-      <td><%= number_to_currency(finance.summary) %></td>
       <td><%= link_to 'Summary', client_path(client), class: 'btn btn-primary' %></td>
       <td><%= link_to 'Audit', client_audit_path(client), class: 'btn btn-info'  %></td>
       <td><%= link_to 'Transactions', client_transactions_path(client), class: 'btn btn-success' %></td>
