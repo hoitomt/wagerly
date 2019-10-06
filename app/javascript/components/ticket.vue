@@ -159,6 +159,9 @@
       lost: function(ticket) {
         return /lost/i.test(ticket.outcome)
       },
+      push: function(ticket) {
+        return /no action/i.test(ticket.outcome)
+      },
       overtagged: function(){
         return this.untaggedAmount < 0
       },
@@ -167,6 +170,8 @@
           return 'bg-success'
         else if ( this.lost(ticket) )
           return 'bg-danger'
+        else if ( this.push(ticket) )
+          return 'bg-info'
         else
           return 'bg-warning'
       },
