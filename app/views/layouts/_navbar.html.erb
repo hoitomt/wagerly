@@ -40,11 +40,26 @@
               $('#loading').show();
             });
 
-            $('.sync-link').bind('ajax:complete', function() {
-              console.log("Return");
+            $('.sync-link').bind('ajax:success', function() {
+              console.log("Success");
               document.location.reload();
               // $('#before-send').show();
               // $('#loading').hide();
+            });
+
+            $('.sync-link').bind('ajax:error', function(event) {
+              let errorText = "";
+              for (var obj in event.detail) {
+                var errorObj = event.detail[obj]
+                if(errorObj['error']) {
+                  console.log(errorObj.error)
+                  errorText = errorObj.error
+                }
+              }
+              // console.log("Error", event.detail[0]);
+              $('#before-send').show();
+              $('#loading').hide();
+              alert(errorText);
             });
           </script>
         </li>

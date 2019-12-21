@@ -21,7 +21,11 @@ class TicketsController < ApplicationController
   end
 
   def sync
-    sb = SB::SportsbookData.new(ENV['SB_USERNAME'], ENV['SB_PASSWORD'])
+    if current_user.sportsbook_username.blank? || current_user.sportsbook_password.blank?
+      render json: {success: false, error: "Please specify sportsbook credentials from your user profile page"}, status: 422
+      return
+    end
+    sb = SB::SportsbookData.new(current_user.sportsbook_username, current_user.sportsbook_password)
     tickets = sb.recent_tickets(Date.today)
     render json: {success: true}, status: 200
   end
