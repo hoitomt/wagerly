@@ -30,3 +30,6 @@ yarn-error.log*
 vendor/ruby
 vendor/bundle
 .bundle
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
