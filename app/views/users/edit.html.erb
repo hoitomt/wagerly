@@ -1,0 +1,12 @@
+<% if @sportsbook %>
+  <h1>Edit Sportsbook credentials for <%= @user.full_name %></h1>
+<% else %>
+  <h1>Edit <%= @user.full_name %></h1>
+<% end %>
+
+
+<%= simple_form_for @user do |f| %>
+  <%= f.input :sportsbook_username %>
+  <%= f.input :sportsbook_password %>
+  <%= f.button :submit, class: 'btn btn-success' %>
+<% end %>

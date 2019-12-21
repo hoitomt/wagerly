@@ -1,1 +1,8 @@
 <h1><%= @user.full_name %></h1>
+
+<h2 class="mt-4">Sportsbook Credentials</h2>
+<% if @user.sportsbook_username && @user.sportsbook_password %>
+  <p>Sportsbook.ag credentials have been specified <%= link_to '(update)', edit_user_path(@user, sportsbook: true) %></p>
+<% else %>
+  <p>Sportsbook.ag credentials have not been specified <%= link_to '(add)', edit_user_path(@user, sportsbook: true) %></p>
+<% end %>
