@@ -21,6 +21,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'devise'
 gem 'simple_form'
 gem 'figaro'
+gem 'attr_encrypted', '~> 3.1'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'

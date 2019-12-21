@@ -4,6 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  attr_encrypted :sportsbook_username, key: Rails.application.credentials.encryption_key
+  attr_encrypted :sportsbook_password, key: Rails.application.credentials.encryption_key
+
   has_many :clients
 
   after_create :create_self_client
