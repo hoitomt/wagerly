@@ -42,8 +42,9 @@
 
             $('.sync-link').bind('ajax:complete', function() {
               console.log("Return");
-              $('#before-send').show();
-              $('#loading').hide();
+              document.location.reload();
+              // $('#before-send').show();
+              // $('#loading').hide();
             });
           </script>
         </li>
