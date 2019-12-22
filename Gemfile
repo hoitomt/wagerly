@@ -21,6 +21,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'devise'
 gem 'simple_form'
 gem 'figaro'
+gem 'sprockets', '~> 3.7'
 gem 'attr_encrypted', '~> 3.1'
 
 source 'https://rails-assets.org' do
