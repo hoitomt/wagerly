@@ -4,20 +4,25 @@ class ClientsController < ApplicationController
   def audit
     @client = Client.find(params[:client_id])
 
-    scope = Ticket.order('wager_date DESC')
-    scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", @client.id)
-
-    @tickets = scope
-  end
-
-  def new_audit
-    @client = Client.find(params[:client_id])
-
     scope = Ticket.where("wager_date > ? and wager_date < ?", start_date, stop_date).order('wager_date ASC')
     scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", @client.id)
 
+    financial_transactions = @client.transactions
+
     @tickets = []
     balance = 0
+    financial_transactions.each do |trans|
+      balance += trans.amount
+      @tickets << {
+        'id' => nil,
+        'wager_date' => trans.created_at,
+        'sb_bet_id' => 'Cash',
+        'outcome' => '',
+        'amount' => trans.amount,
+        'balance' => balance
+      }
+    end
+
     # For each ticket: create 2 transactions
     # 1. the debit transaction for the wager
     # 2. the credit/nothing transaction for the result

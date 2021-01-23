@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   resources :clients do
     resources :transactions, only: [:index, :new, :create]
     get 'audit', as: 'audit'
-    get 'new_audit', as: 'new_audit'
   end
 
   resources :tickets, only: [:index, :show] do

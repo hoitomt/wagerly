@@ -5,26 +5,24 @@
 <h2>Detail</h2>
 <table class="table table-striped">
   <tr>
+    <th>Date</th>
     <th>Sportsbook Id</th>
-    <th>Wager Date</th>
     <th>Outcome</th>
-    <th>Ticket Amount</th>
-    <th>Responsible Amount</th>
-    <th>Summary</th>
+    <th>Amount</th>
+    <th>Balance</th>
   </tr>
   <% @tickets.each do |ticket| %>
-    <% ticket_amount = ticket.amount_wagered %>
-    <% responsible_amount = ticket.amount_tagged_by(@client) %>
-    <% summary = ticket.amount_paid.to_f * (responsible_amount.to_f/ticket_amount.to_f) - responsible_amount %>
     <tr>
-      <td><%= link_to ticket.sb_bet_id, ticket_path(ticket) %></td>
-      <td><%= display_date(ticket.wager_date) %></td>
-      <td><%= ticket.outcome %></td>
-      <td><%= number_to_currency(ticket_amount) %></td>
-      <td><%= number_to_currency(responsible_amount) %></td>
-      <td><%= number_to_currency(summary) %></td>
+      <td><%= display_date(ticket['wager_date']) %></td>
+      <% if ticket['id'] %>
+        <td><%= link_to ticket['sb_bet_id'], ticket_path(ticket['id']) %></td>
+      <% else %>
+        <td><%= ticket['sb_bet_id'] %></td>
+      <% end %>
+      <td><%= ticket['outcome'] %></td>
+      <td><%= ticket_amount_display(ticket['amount']) %></td>
+      <td><%= ticket_amount_display(ticket['balance']) %></td>
     </tr>
   <% end %>
 
 </table>
-
