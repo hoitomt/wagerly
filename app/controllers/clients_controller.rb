@@ -4,10 +4,44 @@ class ClientsController < ApplicationController
   def audit
     @client = Client.find(params[:client_id])
 
-    scope = Ticket.where("wager_date > ? and wager_date < ?", start_date, stop_date).sorted
+    scope = Ticket.order('wager_date DESC')
     scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", @client.id)
 
     @tickets = scope
+  end
+
+  def new_audit
+    @client = Client.find(params[:client_id])
+
+    scope = Ticket.where("wager_date > ? and wager_date < ?", start_date, stop_date).order('wager_date ASC')
+    scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", @client.id)
+
+    @tickets = []
+    balance = 0
+    # For each ticket: create 2 transactions
+    # 1. the debit transaction for the wager
+    # 2. the credit/nothing transaction for the result
+    scope.each do |ticket|
+      ticket_amount = ticket.amount_wagered
+      responsible_amount = ticket.amount_tagged_by(@client)
+      summary = ticket.amount_paid.to_f * (responsible_amount.to_f/ticket_amount.to_f)
+
+      balance -= responsible_amount
+      transaction_wager = ticket.attributes
+      transaction_wager['outcome'] = nil
+      transaction_wager['amount'] = responsible_amount * -1
+      transaction_wager['balance'] = balance
+      @tickets << transaction_wager
+
+      if ticket.outcome
+        balance += summary
+        transaction_result = ticket.attributes
+        transaction_result['amount'] = summary
+        transaction_result['balance'] = balance
+        @tickets << transaction_result
+      end
+    end
+    @tickets.reverse!
   end
 
   def index
