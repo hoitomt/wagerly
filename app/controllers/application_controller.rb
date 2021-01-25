@@ -10,8 +10,6 @@ class ApplicationController < ActionController::Base
   def start_date
     if params[:start_date]
       session[:start_date] = params[:start_date]
-    elsif session[:start_date] && session[:start_date].present?
-      session[:start_date]
     else
       session[:start_date] = ENV['START_DATE']
     end

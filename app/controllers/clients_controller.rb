@@ -4,7 +4,7 @@ class ClientsController < ApplicationController
   def audit
     @client = Client.find(params[:client_id])
 
-    scope = Ticket.order('wager_date ASC')
+    scope = Ticket.where("wager_date >= ? and wager_date < ?", start_date, stop_date).order('wager_date ASC')
     scope = scope.joins(:ticket_tags).where("ticket_tags.client_id = ?", @client.id)
 
     financial_transactions = @client.transactions
