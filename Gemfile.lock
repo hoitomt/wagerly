@@ -247,7 +247,7 @@ DEPENDENCIES
   turbolinks (~> 5.2.1)
   uglifier (>= 4.2.0)
   web-console (>= 3.3.0)
-  webpacker
+  webpacker (~> 5.4.3)
 
 RUBY VERSION
    ruby 2.6.6p146

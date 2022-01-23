@@ -45,6 +45,7 @@ bundle exec rake tickets:get_recent
    1. Update the SB_USERNAME and SB_PASSWORD attributes in .env
    1. Reload .env `cd .`
 
+1. Install JS deps: `yarn install`
 1. Run the server: `bails s`
 
 ### Tests
