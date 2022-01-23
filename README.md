@@ -46,6 +46,8 @@ bundle exec rake tickets:get_recent
    1. Reload .env `cd .`
 
 1. Install JS deps: `yarn install`
+1. Install webpacker:`bails webpacker:install`
+1. Install vue assets: `bails webpacker:install:vue`
 1. Run the server: `bails s`
 
 ### Tests
