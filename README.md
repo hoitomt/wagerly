@@ -34,8 +34,8 @@ bundle exec rake tickets:get_recent
 1. Create the database
    ```
    docker-compose up
-   bundle exec rails db:environment:set RAILS_ENV=development
    bundle exec rails db:create
+   bundle exec rails db:environment:set RAILS_ENV=development
    bundle exec rails db:schema:load
    bundle exec rails db:migrate
 
